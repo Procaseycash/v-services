@@ -4,10 +4,18 @@ import Encrypt from "./encrypt";
 import {EventsHandler} from "./event.handler";
 import {Cache} from "./cache";
 
+function checkKeys(keys) {
+    return keys.filter();
+}
+
 const VService = {
     install: (Vue, options) => {
+        if (!options) {
+            throw new Error('Please supply all options, {api_default_url, unAuthorizedCallBackFn}')
+        }
+        const params = ['api_default_url', 'unAuthorizedCallBackFn'];
         const keys = options.keys();
-        if (keys.length === 0) {
+        if (keys.length === 0 || !checkKeys(keys, params)) {
             throw new Error('Please supply all keys, {api_default_url, unAuthorizedCallBackFn}')
         }
         Vue.apiHandler = Vue.prototype.$apiHandler = ApiHandler(options['api_default_url'], options['unAuthorizedCallBackFn']);
